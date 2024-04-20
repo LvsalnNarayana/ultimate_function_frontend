@@ -1,0 +1,16 @@
+#mui-rte-root {
+    width: 100%;
+    padding: 10px;
+    border-radius: 15px;
+    border: 1px solid #00000020;
+}
+
+#mui-rte-toolbar {
+    border-bottom: 1px solid #00000020;
+}
+
+#mui-rte-editor,
+#mui-rte-editor-container,
+.DraftEditor-root {
+    min-height: 200px;
+}
