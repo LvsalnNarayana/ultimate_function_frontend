@@ -12,11 +12,28 @@ import {
 } from "@mui/material"
 import CloseIcon from "@mui/icons-material/Close"
 import { useState } from "react"
+import { useCreateRecordMutation } from "./recordApiSlice"
+import toast from "react-hot-toast"
 const CreateRecord = (props: {
   open: boolean
   handleCreateRecordClose: () => void
 }) => {
   const [newRecord, setNewRecord] = useState({ title: "", tagline: "" })
+  const [createRecord, { isLoading: createRecordLoading }] =
+    useCreateRecordMutation()
+
+  const handleCreateRecord = () => {
+    createRecord(newRecord)
+      .unwrap()
+      .then(result => {
+        setNewRecord({ title: "", tagline: "" })
+        toast.success("Record Created")
+        props.handleCreateRecordClose()
+      })
+      .catch(error => {
+        toast.error("Error Creating Record")
+      })
+  }
   return (
     <Dialog
       keepMounted
@@ -109,10 +126,23 @@ const CreateRecord = (props: {
           alignItems: "center",
         }}
       >
-        <Button onClick={props.handleCreateRecordClose} variant="outlined">
+        <Button
+          disabled={createRecordLoading}
+          onClick={() => {
+            setNewRecord({ title: "", tagline: "" })
+            props.handleCreateRecordClose()
+          }}
+          variant="outlined"
+        >
           Cancel
         </Button>
-        <Button variant="contained">Create</Button>
+        <Button
+          disabled={createRecordLoading}
+          onClick={handleCreateRecord}
+          variant="contained"
+        >
+          Create
+        </Button>
       </DialogActions>
     </Dialog>
   )

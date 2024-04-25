@@ -18,34 +18,30 @@ import { useState } from "react"
 import EditRecord from "./EditRecord"
 import DeleteRecord from "./DeleteRecord"
 import CreateRecord from "./CreateRecord"
+import { useGetRecordsQuery } from "./recordApiSlice"
+import moment from "moment"
 const CrudApp = () => {
-  const createData = (
-    id: string,
-    title: string,
-    tagline: string,
-    createdAt: string,
-    createdBy: string,
-  ) => {
-    return { id, title, tagline, createdAt, createdBy }
-  }
-  const rows = [
-    createData("01", "Record 1", "This is record", "2024", "Narayana"),
-    createData("02", "Record 1", "This is record", "2024", "Narayana"),
-    createData("03", "Record 1", "This is record", "2024", "Narayana"),
-    createData("04", "Record 1", "This is record", "2024", "Narayana"),
-    createData("05", "Record 1", "This is record", "2024", "Narayana"),
-  ]
-
+  const {
+    isLoading: recordsLoading,
+    isError: recordsError,
+    isSuccess: recordsSuccess,
+    data: recordData,
+    refetch: refetchRecords,
+  } = useGetRecordsQuery({})
   const [editRecordOpen, setEditRecordOpen] = useState(false)
-  const handleEditRecordOpen = () => {
+  const [editRecordId, setEditRecordId] = useState("")
+  const handleEditRecordOpen = (recordId: string) => {
     setEditRecordOpen(true)
+    setEditRecordId(recordId)
   }
   const handleEditRecordClose = () => {
     setEditRecordOpen(false)
   }
   const [deleteRecordOpen, setDeleteRecordOpen] = useState(false)
-  const handleDeleteRecordOpen = () => {
+
+  const handleDeleteRecordOpen = (recordId: string) => {
     setDeleteRecordOpen(true)
+    setEditRecordId(recordId)
   }
   const handleDeleteRecordClose = () => {
     setDeleteRecordOpen(false)
@@ -89,54 +85,96 @@ const CrudApp = () => {
           </Button>
         </Stack>
         <Divider sx={{ width: "100%" }} />
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Id</TableCell>
-                <TableCell align="right">Title</TableCell>
-                <TableCell align="right">Tagline</TableCell>
-                <TableCell align="right">CreatedAt</TableCell>
-                <TableCell align="right">CreatedBy</TableCell>
-                <TableCell align="right">Edit</TableCell>
-                <TableCell align="right">Delete</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map(row => (
-                <TableRow
-                  key={row.id}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.id}
-                  </TableCell>
-                  <TableCell align="right">{row.title}</TableCell>
-                  <TableCell align="right">{row.tagline}</TableCell>
-                  <TableCell align="right">{row.createdAt}</TableCell>
-                  <TableCell align="right">{row.createdBy}</TableCell>
-                  <TableCell align="right">
-                    <IconButton onClick={handleEditRecordOpen}>
-                      <EditOutlinedIcon />
-                    </IconButton>
-                  </TableCell>
-                  <TableCell align="right">
-                    <IconButton color="error" onClick={handleDeleteRecordOpen}>
-                      <DeleteOutlineOutlinedIcon />
-                    </IconButton>
-                  </TableCell>
+        {recordsSuccess && !recordsError && !recordsLoading && (
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Id</TableCell>
+                  <TableCell align="right">Title</TableCell>
+                  <TableCell align="right">Tagline</TableCell>
+                  <TableCell align="right">CreatedAt</TableCell>
+                  <TableCell align="right">CreatedBy</TableCell>
+                  <TableCell align="right">Edit</TableCell>
+                  <TableCell align="right">Delete</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {[...recordData]
+                  .sort(
+                    (a: any, b: any) =>
+                      new Date(a.createdAt).getTime() -
+                      new Date(b.createdAt).getTime(),
+                  )
+                  .map((record: any) => (
+                    <TableRow
+                      key={record.id}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {record?.id?.slice(-4)}
+                      </TableCell>
+                      <TableCell align="right">{record.title}</TableCell>
+                      <TableCell align="right">{record.tagline}</TableCell>
+                      <TableCell align="right">
+                        {moment(record.createdAt).format("DD-MM-YYYY")}
+                      </TableCell>
+                      <TableCell align="right">
+                        {record.createdBy.profile.firstName}{" "}
+                        {record.createdBy.profile.lastName}
+                      </TableCell>
+                      <TableCell align="right">
+                        <IconButton
+                          onClick={() => handleEditRecordOpen(record.id)}
+                        >
+                          <EditOutlinedIcon />
+                        </IconButton>
+                      </TableCell>
+                      <TableCell align="right">
+                        <IconButton
+                          color="error"
+                          onClick={() => handleDeleteRecordOpen(record.id)}
+                        >
+                          <DeleteOutlineOutlinedIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+        {recordsLoading && !recordsSuccess && !recordsError && (
+          <Typography
+            variant="body1"
+            textAlign={"center"}
+            sx={{ my: 4, width: "100%" }}
+          >
+            Loading...
+          </Typography>
+        )}
+        {recordsError && !recordsLoading && !recordsSuccess && (
+          <Stack
+            sx={{ width: "100%", my: 4 }}
+            justifyContent={"center"}
+            alignItems={"center"}
+            gap={2}
+          >
+            <Typography>Something went wrong..!</Typography>
+            <Button variant="contained" onClick={refetchRecords}>
+              Retry
+            </Button>
+          </Stack>
+        )}
       </Stack>
       <EditRecord
-        open={editRecordOpen}
+        config={{ open: editRecordOpen, recordId: editRecordId }}
+        setRecordId={(recordId: string) => setEditRecordId(recordId)}
         handleEditRecordClose={handleEditRecordClose}
       />
       <DeleteRecord
-        open={deleteRecordOpen}
+        config={{ open: deleteRecordOpen, recordId: editRecordId }}
+        setRecordId={(recordId: string) => setEditRecordId(recordId)}
         handleDeleteRecordClose={handleDeleteRecordClose}
       />
       <CreateRecord
