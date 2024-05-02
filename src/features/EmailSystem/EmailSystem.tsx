@@ -11,16 +11,19 @@ import MUIRichTextEditor from "mui-rte"
 import { stateToHTML } from "draft-js-export-html"
 import type { EditorState } from "draft-js"
 import "./EmailSystem.css"
+import { useSendEmailMutation } from "./emailApiSlice"
+import toast from "react-hot-toast"
 
 const EmailSystem = () => {
-  const [emailIds, setEmailIds] = useState("")
+  const [emailId, setemailId] = useState("")
   const [subject, setSubject] = useState("")
   const [content, setContent] = useState("")
   const [emailError, setEmailError] = useState("")
   const [subjectError, setSubjectError] = useState("")
   const [contentError, setContentError] = useState("")
-
+  const [sendMail, { isLoading: sendMailLoading }] = useSendEmailMutation()
   const handleEmailbodyChange = (state: EditorState) => {
+    setContentError("")
     const html = stateToHTML(state.getCurrentContent())
     setContent(html)
   }
@@ -28,7 +31,7 @@ const EmailSystem = () => {
   const validateInputs = () => {
     let isValid = true
 
-    if (!emailIds.trim() || !emailIds.split(",").some(email => email.trim())) {
+    if (!emailId.trim()) {
       setEmailError("Please enter at least one valid email address.")
       isValid = false
     } else {
@@ -53,16 +56,21 @@ const EmailSystem = () => {
 
   const handleSendEmail = () => {
     if (validateInputs()) {
-      const emailArray = emailIds
-        .split(",")
-        .map(email => email.trim())
-        .filter(email => email !== "")
-      const emailData = {
-        emailIds: emailArray,
+      sendMail({
         subject: subject,
-        body: content,
-      }
-      console.log(emailData)
+        email: emailId,
+        html: content,
+      })
+        .unwrap()
+        .then((result: any) => {
+          setContent("")
+          setSubject("")
+          setemailId("")
+          toast.success("Email sent successfully!")
+        })
+        .catch((error: any) => {
+          toast.error("Error sending email!")
+        })
     }
   }
 
@@ -78,13 +86,16 @@ const EmailSystem = () => {
         Email System
       </Typography>
       <Divider sx={{ width: "100%", mb: 2 }} />
-      <Typography>Enter email ids to send the mail</Typography>
+      <Typography>Enter email id to send the mail</Typography>
       <>
         <TextField
-          onChange={e => setEmailIds(e.target.value)}
-          placeholder="Enter your email separated by ', '"
+          onChange={e => {
+            setEmailError("")
+            setemailId(e.target.value)
+          }}
+          placeholder="Enter your email"
           size="small"
-          value={emailIds}
+          value={emailId}
           error={!!emailError}
           sx={{ width: "100%", "& .MuiInputBase-root": { borderRadius: 3 } }}
         />
@@ -95,7 +106,10 @@ const EmailSystem = () => {
       <Typography>Enter email subject</Typography>
       <>
         <TextField
-          onChange={e => setSubject(e.target.value)}
+          onChange={e => {
+            setSubjectError("")
+            setSubject(e.target.value)
+          }}
           placeholder="Enter your email subject"
           size="small"
           value={subject}
@@ -110,12 +124,17 @@ const EmailSystem = () => {
       <MUIRichTextEditor
         onChange={handleEmailbodyChange}
         controls={["title", "bold", "italic", "underline", "link"]}
-        defaultValue={null}
+        defaultValue={""}
       />
       <FormHelperText sx={{ fontSize: "14px", mb: 5 }} error>
         {contentError}
       </FormHelperText>
-      <Button variant="contained" sx={{ ml: "auto" }} onClick={handleSendEmail}>
+      <Button
+        disabled={sendMailLoading}
+        variant="contained"
+        sx={{ ml: "auto" }}
+        onClick={handleSendEmail}
+      >
         Send Email
       </Button>
     </Stack>
