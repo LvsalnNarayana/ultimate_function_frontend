@@ -10,15 +10,6 @@ export const authApiSlice = createApi({
         url: `/auth/get-session`,
         credentials: "include",
       }),
-      transformErrorResponse: (response) => {
-        if (response.status === 404) {
-
-          return {
-            error: "Not found",
-          }
-        }
-      },
-      keepUnusedDataFor: 0,
       providesTags: ["session"],
     }),
     checkUsername: build.query({
@@ -46,7 +37,9 @@ export const authApiSlice = createApi({
       query: () => ({
         url: `/auth/logout`,
         method: "POST",
+        credentials: "include",
       }),
+      invalidatesTags: ["session"],
     }),
   }),
 })

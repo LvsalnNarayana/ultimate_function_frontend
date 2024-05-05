@@ -1,8 +1,26 @@
 import { Button, Card, Stack, Typography } from "@mui/material"
 import ChangeHistoryIcon from "@mui/icons-material/ChangeHistory"
 import type { Subscription } from "./SubscriptionList"
+import { usePurchaseSubscriptionMutation } from "./SubscriptionApiSlice"
+import toast from "react-hot-toast"
+import { useAppDispatch } from "../../app/hooks"
+import { authApiSlice } from "../../auth/authApiSlice"
 
 const SubscriptionCard = (props: { subscription: Subscription }) => {
+  const dispatch = useAppDispatch()
+  const [purchaseSubscription, { isLoading: purchaseSubscriptionLoading }] =
+    usePurchaseSubscriptionMutation()
+  const handlePurchaseSubscription = () => {
+    purchaseSubscription({ endDate: props.subscription.duration })
+      .unwrap()
+      .then(() => {
+        dispatch(authApiSlice.util.invalidateTags(["session"]))
+        toast.success("Subscription purchased successfully!")
+      })
+      .catch(() => {
+        toast.error("Error purchasing subscription")
+      })
+  }
   return (
     <>
       <Card sx={{ width: 300, p: 3, borderRadius: 3 }}>
@@ -44,7 +62,12 @@ const SubscriptionCard = (props: { subscription: Subscription }) => {
             {props.subscription.price}
           </Typography>
         </Stack>
-        <Button variant="contained" sx={{ width: "100%", mt: 2 }}>
+        <Button
+          onClick={handlePurchaseSubscription}
+          variant="contained"
+          sx={{ width: "100%", mt: 2 }}
+          disabled={purchaseSubscriptionLoading}
+        >
           Subscribe
         </Button>
       </Card>

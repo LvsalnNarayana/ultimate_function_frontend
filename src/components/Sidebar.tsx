@@ -8,7 +8,7 @@ import {
   useTheme,
 } from "@mui/material"
 import ProfileAvatar from "./ProfileAvatar"
-import { useLocation, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 const sidebarItems = [
   { id: "basic-crud", title: "Basic CRUD", route: "CRUD" },
   { id: "email-system", title: "Email System", route: "email-system" },
@@ -17,27 +17,63 @@ const sidebarItems = [
     title: "Subscription System",
     route: "subscription-system",
   },
-  { id: "newsletter-subscription", title: "Newsletter Subscription System" },
-  { id: "session-management", title: "Session Management" },
-  { id: "file-handling", title: "File Handling" },
-  { id: "data-sanitization", title: "Data Sanitization" },
-  { id: "stripe-payment", title: "Stripe Payment System" },
-  { id: "notification-system", title: "Notification System" },
-  { id: "messaging-system", title: "Messaging System" },
-  { id: "micro-services", title: "Micro Services" },
-  { id: "background-tasks", title: "Background Tasks" },
-  { id: "cron-jobs", title: "CRON Jobs" },
-  { id: "csrf-xss-protection", title: "CSRF & XSS Protection" },
-  { id: "rate-limiting", title: "Rate Limiting" },
+  {
+    id: "newsletter-subscription",
+    title: "Newsletter Subscription System",
+    route: "newsletter",
+  },
+  {
+    id: "session-management",
+    title: "Session Management",
+    route: "session-management",
+  },
+  { id: "file-handling", title: "File Handling", route: "file-handling" },
+  {
+    id: "data-sanitization",
+    title: "Data Sanitization",
+    route: "data-sanitization",
+  },
+  {
+    id: "stripe-payment",
+    title: "Stripe Payment System",
+    route: "stripe-payment",
+  },
+  {
+    id: "notification-system",
+    title: "Notification System",
+    route: "notification-system",
+  },
+  {
+    id: "messaging-system",
+    title: "Messaging System",
+    route: "messaging-system",
+  },
+  { id: "micro-services", title: "Micro Services", route: "micro-services" },
+  {
+    id: "background-tasks",
+    title: "Background Tasks",
+    route: "background-tasks",
+  },
+  { id: "cron-jobs", title: "CRON Jobs", route: "cron-jobs" },
+  {
+    id: "csrf-xss-protection",
+    title: "CSRF & XSS Protection",
+    route: "csrf-xss-protection",
+  },
+  { id: "rate-limiting", title: "Rate Limiting", route: "rate-limiting" },
   { id: "graphql", title: "GraphQL" },
   { id: "oauth", title: "OAuth" },
   { id: "oauth2", title: "OAuth 2.0" },
-  { id: "jwt", title: "JWT" },
-  { id: "caching", title: "Caching" },
+  { id: "jwt", title: "JWT", route: "jwt" },
+  { id: "caching", title: "Caching", route: "caching" },
   { id: "trpc", title: "TRPC" },
-  { id: "sse", title: "Server Sent Events" },
-  { id: "spin-wheel", title: "Spin Wheel" },
-  { id: "discount-coupons", title: "Discount Coupons" },
+  { id: "sse", title: "Server Sent Events", route: "sse" },
+  { id: "spin-wheel", title: "Spin Wheel", route: "spin-wheel" },
+  {
+    id: "discount-coupons",
+    title: "Discount Coupons",
+    route: "discount-coupons",
+  },
 ]
 
 const Sidebar = () => {
@@ -71,13 +107,15 @@ const Sidebar = () => {
           backgroundColor: `${theme.palette.primary.main}40`,
         }}
       >
-        <Typography
-          variant="body1"
-          sx={{ pb: 3, fontSize: "24px", textAlign: "center" }}
-          className="source-code-pro"
-        >
-          {"<Ultimate_function/>"}
-        </Typography>
+        <Link to={"/"}>
+          <Typography
+            variant="body1"
+            sx={{ pb: 3, fontSize: "24px", textAlign: "center" }}
+            className="source-code-pro"
+          >
+            {"<Ultimate_function/>"}
+          </Typography>
+        </Link>
         <Stack
           direction={"row"}
           justifyContent={"center"}

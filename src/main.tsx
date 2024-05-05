@@ -44,8 +44,8 @@ if (container) {
                   />
                 </Route>
               </Routes>
-              <Toaster/>
             </AuthProvider>
+            <Toaster />
             <CssBaseline />
           </ThemeProvider>
         </Provider>

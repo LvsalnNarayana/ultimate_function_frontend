@@ -1,13 +1,13 @@
 export const subscriptionList: Subscription[] = [
     {
         title: 'Pro',
-        duration: '4 months',
+        duration: '4m',
         price: 60,
         currency: 'USD',
     },
     {
         title: 'Pro',
-        duration: '1 month',
+        duration: '1m',
         price: 20,
         currency: 'USD',
     }

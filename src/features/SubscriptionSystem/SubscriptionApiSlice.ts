@@ -5,7 +5,7 @@ export const subscriptionApiSlice = createApi({
     reducerPath: "subscriptionApi",
     endpoints: build => ({
         getSubscriptionStatus: build.query({
-            query: (data) => ({
+            query: () => ({
                 url: "/subscription/subscription-status",
             })
         }),
@@ -15,11 +15,17 @@ export const subscriptionApiSlice = createApi({
                 method: "POST",
                 body: data
             })
+        }),
+        getSubscribedContent: build.query({
+            query: () => ({
+                url: "/subscription/subscribed-content"
+            })
         })
     }),
 })
 
 export const {
     useLazyGetSubscriptionStatusQuery,
-    usePurchaseSubscriptionMutation
+    usePurchaseSubscriptionMutation,
+    useLazyGetSubscribedContentQuery
 } = subscriptionApiSlice

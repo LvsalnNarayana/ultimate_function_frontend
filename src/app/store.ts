@@ -6,6 +6,7 @@ import { quotesApiSlice } from "../features/quotes/quotesApiSlice"
 import { authApiSlice } from "../auth/authApiSlice"
 import { recordApiSlice } from "../features/CRUD/recordApiSlice"
 import { emailApiSlice } from "../features/EmailSystem/emailApiSlice"
+import { subscriptionApiSlice } from "../features/SubscriptionSystem/SubscriptionApiSlice"
 
 const rootReducer = combineSlices(
   counterSlice,
@@ -13,6 +14,7 @@ const rootReducer = combineSlices(
   authApiSlice,
   recordApiSlice,
   emailApiSlice,
+  subscriptionApiSlice
 )
 
 export type RootState = ReturnType<typeof rootReducer>
@@ -27,6 +29,7 @@ export const makeStore = (preloadedState?: Partial<RootState>) => {
         authApiSlice.middleware,
         recordApiSlice.middleware,
         emailApiSlice.middleware,
+        subscriptionApiSlice.middleware
       ])
     },
     preloadedState,

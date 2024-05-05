@@ -12,12 +12,13 @@ import {
 import Visibility from "@mui/icons-material/Visibility"
 import VisibilityOff from "@mui/icons-material/VisibilityOff"
 import { Link, useNavigate } from "react-router-dom"
-import { useLoginMutation } from "./authApiSlice"
+import { authApiSlice, useLoginMutation } from "./authApiSlice"
 import { useAuth } from "./AuthWrapper"
+import { useAppDispatch } from "../app/hooks"
 
 const Login = () => {
   const { session } = useAuth()
-
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const [email, setEmail] = useState("narayanalvsaln@example.com")
   const [password, setPassword] = useState("admin1234")
