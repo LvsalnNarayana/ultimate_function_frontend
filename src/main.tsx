@@ -15,6 +15,7 @@ import Login from "./auth/Login"
 import Register from "./auth/Register"
 import ProtectedRoute from "./auth/ProtectedRoute"
 import { Toaster } from "react-hot-toast"
+import NewsLetter from "./features/NewsLetter/NewsLetter"
 
 const container = document.getElementById("root")
 
@@ -41,6 +42,10 @@ if (container) {
                   <Route
                     path="/subscription-system"
                     element={<SubscriptionSystem />}
+                  />
+                  <Route
+                    path="/newsletter-system"
+                    element={<NewsLetter />}
                   />
                 </Route>
               </Routes>
