@@ -9,70 +9,132 @@ import {
 } from "@mui/material"
 import ProfileAvatar from "./ProfileAvatar"
 import { Link, useLocation, useNavigate } from "react-router-dom"
-const sidebarItems = [
-  { id: "basic-crud", title: "Basic CRUD", route: "CRUD" },
-  { id: "email-system", title: "Email System", route: "email-system" },
+import EmailSystem from "../features/EmailSystem/EmailSystem"
+import CrudApp from "../features/CRUD/CrudApp"
+import SubscriptionSystem from "../features/SubscriptionSystem/SubscriptionSystem"
+import NewsLetter from "../features/NewsLetter/NewsLetter"
+import SessionManagement from "../features/SessionManagement/SessionManagement"
+import FileHandling from "../features/FileHandling/FileHandling"
+import DataSanitization from "../features/DataSanitization/DataSanitization"
+import StripePayment from "../features/StripePayment/StripePayment"
+import NotificationSystem from "../features/NotificationSystem/NotificationSystem"
+import Messages from "../features/Messages/Messages"
+import Microservices from "../features/Microservices/Microservices"
+import BackgroundTask from "../features/BackgroundTasks/BackgroundTask"
+import CRON from "../features/CRONjobs/CRON"
+import CSRF_XSS from "../features/CSRF&XSS/CSRF_XSS"
+import RateLimiting from "../features/RateLimiting/RateLimiting"
+import ServerEvents from "../features/ServerEvents/ServerEvents"
+import DiscountCoupon from "../features/DiscountCoupons/DiscountCoupon"
+import type { NavMenu } from "../utils/Interfaces"
+export const sidebarItems: NavMenu[] = [
+  { id: "basic-crud", title: "Basic CRUD", route: "CRUD", component: CrudApp },
+  {
+    id: "email-system",
+    title: "Email System",
+    route: "email-system",
+    component: EmailSystem,
+  },
   {
     id: "subscription-system",
     title: "Subscription System",
     route: "subscription-system",
+    component: SubscriptionSystem,
   },
   {
     id: "newsletter-subscription",
     title: "Newsletter Subscription System",
     route: "newsletter",
+    component: NewsLetter,
   },
   {
     id: "session-management",
     title: "Session Management",
     route: "session-management",
+    component: SessionManagement,
   },
-  { id: "file-handling", title: "File Handling", route: "file-handling" },
+  {
+    id: "file-handling",
+    title: "File Handling",
+    route: "file-handling",
+    component: FileHandling,
+  },
   {
     id: "data-sanitization",
     title: "Data Sanitization",
     route: "data-sanitization",
+    component: DataSanitization,
   },
   {
     id: "stripe-payment",
     title: "Stripe Payment System",
     route: "stripe-payment",
+    component: StripePayment,
   },
   {
     id: "notification-system",
     title: "Notification System",
     route: "notification-system",
+    component: NotificationSystem,
   },
   {
     id: "messaging-system",
     title: "Messaging System",
     route: "messaging-system",
+    component: Messages,
   },
-  { id: "micro-services", title: "Micro Services", route: "micro-services" },
+  {
+    id: "micro-services",
+    title: "Micro Services",
+    route: "micro-services",
+    component: Microservices,
+  },
   {
     id: "background-tasks",
     title: "Background Tasks",
     route: "background-tasks",
+    component: BackgroundTask,
   },
-  { id: "cron-jobs", title: "CRON Jobs", route: "cron-jobs" },
+  { id: "cron-jobs", title: "CRON Jobs", route: "cron-jobs", component: CRON },
   {
     id: "csrf-xss-protection",
     title: "CSRF & XSS Protection",
     route: "csrf-xss-protection",
+    component: CSRF_XSS,
   },
-  { id: "rate-limiting", title: "Rate Limiting", route: "rate-limiting" },
-  { id: "graphql", title: "GraphQL" },
-  { id: "oauth", title: "OAuth" },
-  { id: "oauth2", title: "OAuth 2.0" },
+  {
+    id: "rate-limiting",
+    title: "Rate Limiting",
+    route: "rate-limiting",
+    component: RateLimiting,
+  },
+  { id: "graphql", title: "GraphQL", route: "" },
+  { id: "oauth", title: "OAuth", route: "" },
+  { id: "oauth2", title: "OAuth 2.0", route: "" },
   { id: "jwt", title: "JWT", route: "jwt" },
-  { id: "caching", title: "Caching", route: "caching" },
-  { id: "trpc", title: "TRPC" },
-  { id: "sse", title: "Server Sent Events", route: "sse" },
-  { id: "spin-wheel", title: "Spin Wheel", route: "spin-wheel" },
+  {
+    id: "caching",
+    title: "Caching",
+    route: "caching",
+    component: FileHandling,
+  },
+  { id: "trpc", title: "TRPC", route: "" },
+  {
+    id: "sse",
+    title: "Server Sent Events",
+    route: "sse",
+    component: ServerEvents,
+  },
+  {
+    id: "spin-wheel",
+    title: "Spin Wheel",
+    route: "spin-wheel",
+  },
   {
     id: "discount-coupons",
     title: "Discount Coupons",
     route: "discount-coupons",
+    component: DiscountCoupon,
   },
 ]
 

@@ -1,8 +1,11 @@
-import React from 'react'
+import type React from "react"
+import ComponentWrapper from "../../components/ComponentWrapper"
 
-const CRON = () => {
+const CRON: React.FC<{ title: string }> = ({ title }) => {
   return (
-    <div>CRON</div>
+    <ComponentWrapper title={title}>
+      <h1>hello</h1>
+    </ComponentWrapper>
   )
 }
 

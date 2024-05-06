@@ -1,8 +1,11 @@
-import React from 'react'
+import type React from "react"
+import ComponentWrapper from "../../components/ComponentWrapper"
 
-const DiscountCoupon = () => {
+const DiscountCoupon: React.FC<{ title: string }> = ({ title }) => {
   return (
-    <div>DiscountCoupon</div>
+    <ComponentWrapper title={title}>
+      <h1>hello</h1>
+    </ComponentWrapper>
   )
 }
 

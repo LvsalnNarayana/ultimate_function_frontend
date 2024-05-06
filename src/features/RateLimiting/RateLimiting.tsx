@@ -1,8 +1,11 @@
-import React from 'react'
+import type React from 'react'
+import ComponentWrapper from '../../components/ComponentWrapper'
 
-const RateLimiting = () => {
+const RateLimiting : React.FC<{ title: string }> = ({ title }) => {
   return (
-    <div>RateLimiting</div>
+    <ComponentWrapper title={title}>
+      <h1>hello</h1>
+    </ComponentWrapper>
   )
 }
 

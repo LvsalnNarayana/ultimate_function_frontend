@@ -1,8 +1,11 @@
-import React from 'react'
+import type React from "react"
+import ComponentWrapper from "../../components/ComponentWrapper"
 
-const ServerEvents = () => {
+const ServerEvents: React.FC<{ title: string }> = ({ title }) => {
   return (
-    <div>ServerEvents</div>
+    <ComponentWrapper title={title}>
+      <h1>hello</h1>
+    </ComponentWrapper>
   )
 }
 

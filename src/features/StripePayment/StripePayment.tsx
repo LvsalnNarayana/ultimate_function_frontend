@@ -1,8 +1,11 @@
-import React from 'react'
+import type React from "react"
+import ComponentWrapper from "../../components/ComponentWrapper"
 
-const StripePayment = () => {
+const StripePayment: React.FC<{ title: string }> = ({ title }) => {
   return (
-    <div>StripePayment</div>
+    <ComponentWrapper title={title}>
+      <h1>hello</h1>
+    </ComponentWrapper>
   )
 }
 

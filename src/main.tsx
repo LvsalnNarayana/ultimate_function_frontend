@@ -1,4 +1,4 @@
-import React from "react"
+import React, { ElementType, ReactNode } from "react"
 import { createRoot } from "react-dom/client"
 import { Provider } from "react-redux"
 import App from "./App"
@@ -7,15 +7,13 @@ import "./index.css"
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material"
 import { generateThemeOptions } from "./theme"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import CrudApp from "./features/CRUD/CrudApp"
-import EmailSystem from "./features/EmailSystem/EmailSystem"
-import SubscriptionSystem from "./features/SubscriptionSystem/SubscriptionSystem"
 import AuthProvider from "./auth/AuthWrapper"
 import Login from "./auth/Login"
 import Register from "./auth/Register"
 import ProtectedRoute from "./auth/ProtectedRoute"
 import { Toaster } from "react-hot-toast"
-import NewsLetter from "./features/NewsLetter/NewsLetter"
+import { sidebarItems } from "./components/Sidebar"
+import { NavMenu } from "./utils/Interfaces"
 
 const container = document.getElementById("root")
 
@@ -34,19 +32,27 @@ if (container) {
             <AuthProvider>
               <Routes>
                 <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
                 <Route element={<ProtectedRoute />}>
                   <Route path="/" element={<App />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route path="/CRUD" element={<CrudApp />} />
-                  <Route path="/email-system" element={<EmailSystem />} />
-                  <Route
-                    path="/subscription-system"
-                    element={<SubscriptionSystem />}
-                  />
-                  <Route
-                    path="/newsletter-system"
-                    element={<NewsLetter />}
-                  />
+                  {sidebarItems
+                    ?.filter(
+                      (item: any) =>
+                        "route" in item &&
+                        "component" in item &&
+                        item?.route !== "" &&
+                        item?.component !== null &&
+                        item?.component !== undefined,
+                    )
+                    ?.map((item: NavMenu) => {
+                      return (
+                        <Route
+                          key={item?.id}
+                          path={`/${item?.route}`}
+                          element={<item.component title={item?.title} />}
+                        />
+                      )
+                    })}
                 </Route>
               </Routes>
             </AuthProvider>

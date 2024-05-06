@@ -1,8 +1,11 @@
-import React from 'react'
+import type React from "react"
+import ComponentWrapper from "../../components/ComponentWrapper"
 
-const JWT = () => {
+const JWT: React.FC<{ title: string }> = ({ title }) => {
   return (
-    <div>JWT</div>
+    <ComponentWrapper title={title}>
+      <h1>hello</h1>
+    </ComponentWrapper>
   )
 }
 

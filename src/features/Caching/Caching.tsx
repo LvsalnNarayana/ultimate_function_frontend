@@ -1,9 +1,7 @@
-import React from 'react'
+import type React from "react"
 
-const Caching = () => {
-  return (
-    <div>Caching</div>
-  )
+const Caching: React.FC<{ title: string }> = ({ title }) => {
+  return <div>Caching</div>
 }
 
 export default Caching

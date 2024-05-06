@@ -1,9 +1,7 @@
-import React from 'react'
+import type React from "react"
 
-const BackgroundTask = () => {
-  return (
-    <div>BackgroundTask</div>
-  )
+const BackgroundTask: React.FC<{ title: string }> = ({ title }) => {
+  return <div>BackgroundTask</div>
 }
 
 export default BackgroundTask

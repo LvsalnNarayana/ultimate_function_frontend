@@ -1,7 +1,6 @@
 import {
   Stack,
   Typography,
-  Divider,
   Button,
   IconButton,
   CircularProgress,
@@ -21,7 +20,8 @@ import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import moment from "moment"
 import { CloseOutlined } from "@mui/icons-material"
-const SubscriptionSystem = () => {
+import ComponentWrapper from "../../components/ComponentWrapper"
+const SubscriptionSystem: React.FC<{ title: string }> = ({ title }) => {
   /*
   ..######..########....###....########.########
   .##....##....##......##.##......##....##......
@@ -113,17 +113,7 @@ const SubscriptionSystem = () => {
   }, [subscriptionStatus])
 
   return (
-    <Stack
-      sx={{ px: 4, py: 2, width: "100%" }}
-      gap={2}
-      direction="column"
-      justifyContent="flex-start"
-      alignItems="flex-start"
-    >
-      <Typography variant="h6" sx={{ fontWeight: "semibold" }}>
-        Subscription System
-      </Typography>
-      <Divider sx={{ width: "100%", mb: 2 }} />
+    <ComponentWrapper title={title}>
       {!subscriptionStatusLoading &&
         !subscriptionStatusError &&
         subscriptionStatusSuccess &&
@@ -173,14 +163,7 @@ const SubscriptionSystem = () => {
           return <SubscriptionCard key={index} subscription={subscription} />
         })}
       </Stack>
-      <Button
-        onClick={showProContent}
-        variant="contained"
-        sx={{ mx: "auto", my: 3 }}
-      >
-        <ChangeHistoryIcon />
-        &nbsp;Show Pro Content
-      </Button>
+
       <>
         {!subscribedContentError &&
           !subscribedContentLoading &&
@@ -222,11 +205,21 @@ const SubscriptionSystem = () => {
               </DialogContent>
             </Dialog>
           )}
-        {!subscribedContentError &&
-          subscribedContentLoading &&
-          !SubscribedContentSuccess && <CircularProgress color="secondary" />}
+
+        <Button
+          onClick={showProContent}
+          variant="contained"
+          sx={{ mx: "auto", my: 3 }}
+        >
+          {subscribedContentLoading ? (
+            <CircularProgress size={20} sx={{ color: "white" }} />
+          ) : (
+            <ChangeHistoryIcon />
+          )}
+          &nbsp;Show Pro Content
+        </Button>
       </>
-    </Stack>
+    </ComponentWrapper>
   )
 }
 

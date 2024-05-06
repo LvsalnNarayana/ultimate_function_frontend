@@ -1,8 +1,6 @@
 import { useState } from "react"
 import {
-  Stack,
   Typography,
-  Divider,
   TextField,
   Button,
   FormHelperText,
@@ -13,15 +11,43 @@ import type { EditorState } from "draft-js"
 import "./EmailSystem.css"
 import { useSendEmailMutation } from "./emailApiSlice"
 import toast from "react-hot-toast"
+import ComponentWrapper from "../../components/ComponentWrapper"
 
-const EmailSystem = () => {
+const EmailSystem: React.FC<{ title: string }> = ({ title }) => {
+  /*
+  ..######..########....###....########.########
+  .##....##....##......##.##......##....##......
+  .##..........##.....##...##.....##....##......
+  ..######.....##....##.....##....##....######..
+  .......##....##....#########....##....##......
+  .##....##....##....##.....##....##....##......
+  ..######.....##....##.....##....##....########
+  */
   const [emailId, setemailId] = useState("")
   const [subject, setSubject] = useState("")
   const [content, setContent] = useState("")
   const [emailError, setEmailError] = useState("")
   const [subjectError, setSubjectError] = useState("")
   const [contentError, setContentError] = useState("")
+  /*
+  ....###....########..####.....######.....###....##.......##........######.
+  ...##.##...##.....##..##.....##....##...##.##...##.......##.......##....##
+  ..##...##..##.....##..##.....##........##...##..##.......##.......##......
+  .##.....##.########...##.....##.......##.....##.##.......##........######.
+  .#########.##.........##.....##.......#########.##.......##.............##
+  .##.....##.##.........##.....##....##.##.....##.##.......##.......##....##
+  .##.....##.##........####.....######..##.....##.########.########..######.
+  */
   const [sendMail, { isLoading: sendMailLoading }] = useSendEmailMutation()
+  /*
+  .##.....##.########.########.##.....##..#######..########...######.
+  .###...###.##..........##....##.....##.##.....##.##.....##.##....##
+  .####.####.##..........##....##.....##.##.....##.##.....##.##......
+  .##.###.##.######......##....#########.##.....##.##.....##..######.
+  .##.....##.##..........##....##.....##.##.....##.##.....##.......##
+  .##.....##.##..........##....##.....##.##.....##.##.....##.##....##
+  .##.....##.########....##....##.....##..#######..########...######.
+  */
   const handleEmailbodyChange = (state: EditorState) => {
     setContentError("")
     const html = stateToHTML(state.getCurrentContent())
@@ -75,17 +101,7 @@ const EmailSystem = () => {
   }
 
   return (
-    <Stack
-      sx={{ px: 4, py: 2, width: "100%" }}
-      gap={1}
-      direction="column"
-      justifyContent="flex-start"
-      alignItems="flex-start"
-    >
-      <Typography variant="h6" sx={{ fontWeight: "semibold" }}>
-        Email System
-      </Typography>
-      <Divider sx={{ width: "100%", mb: 2 }} />
+    <ComponentWrapper title={title}>
       <Typography>Enter email id to send the mail</Typography>
       <>
         <TextField
@@ -137,7 +153,7 @@ const EmailSystem = () => {
       >
         Send Email
       </Button>
-    </Stack>
+    </ComponentWrapper>
   )
 }
 

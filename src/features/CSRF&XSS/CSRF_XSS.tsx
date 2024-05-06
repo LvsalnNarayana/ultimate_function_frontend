@@ -1,8 +1,11 @@
-import React from 'react'
+import type React from "react"
+import ComponentWrapper from "../../components/ComponentWrapper"
 
-const CSRF_XSS = () => {
+const CSRF_XSS: React.FC<{ title: string }> = ({ title }) => {
   return (
-    <div>CSRF_XSS</div>
+    <ComponentWrapper title={title}>
+      <h1>hello</h1>
+    </ComponentWrapper>
   )
 }
 
